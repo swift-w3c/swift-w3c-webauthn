@@ -23,21 +23,17 @@ extension W3C_WebAuthn.Registration {
         challenge: [UInt8],
         relyingParty: W3C_WebAuthn.RelyingParty
     ) throws(W3C_WebAuthn.Error) -> W3C_WebAuthn.Credential {
-        // Steps 5 to 11.
         let clientData = try W3C_WebAuthn.ClientData(json: clientDataJSON)
         try clientData.verify(type: "webauthn.create", challenge: challenge, relyingParty: relyingParty)
 
-        // Steps 12 to 16.
         let object = try W3C_WebAuthn.AttestationObject(attestationObject)
         let authenticatorData = object.authenticatorData
         try authenticatorData.verify(relyingParty: relyingParty)
         guard let attested = authenticatorData.attestedCredentialData else { throw .attestedCredentialData }
 
-        // Steps 18 and 23.
         let publicKey = try W3C_WebAuthn.PublicKey(attested.publicKey, algorithms: relyingParty.algorithms)
         guard attested.credentialID.count <= 1023 else { throw .credentialID }
 
-        // Steps 20 to 22.
         try verifyStatement(
             format: object.format,
             statement: RFC_8949.Value.map(object.statement),
@@ -67,12 +63,9 @@ extension W3C_WebAuthn.Registration {
     ) throws(W3C_WebAuthn.Error) {
         switch format {
         case "none":
-            // Section 8.7: the statement is an empty map.
             guard statement.map?.isEmpty == true else { throw .attestationStatement }
 
         case "packed":
-            // Section 8.2, self attestation: no x5c, alg is the credential's, and sig verifies under the
-            // credential key over authenticatorData || clientDataHash.
             guard statement["x5c"] == nil else { throw .attestationFormat(format) }
             guard let pairs = statement.map, pairs.count == 2,
                 let alg = statement["alg"], RFC_9053.Algorithm(alg) == publicKey.algorithm,

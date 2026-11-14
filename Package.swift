@@ -12,7 +12,7 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
-        .library(name: "W3C WebAuthn", targets: ["W3C WebAuthn"]),
+        .library(name: "W3C WebAuthn", targets: ["W3C WebAuthn"])
     ],
     dependencies: [
         .package(
@@ -70,7 +70,7 @@ let package = Package(
         .testTarget(
             name: "W3C WebAuthn Tests",
             dependencies: [
-                .target(name: "W3C WebAuthn"),
+                .target(name: "W3C WebAuthn")
             ]
         ),
     ],

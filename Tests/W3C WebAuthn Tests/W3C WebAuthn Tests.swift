@@ -1,5 +1,4 @@
 import Testing
-
 import W3C_WebAuthn
 
 @Suite
@@ -169,16 +168,19 @@ struct `W3C WebAuthn Tests` {
         }
         let other = try Self.register(Example.selfAttestation)
         #expect(throws: W3C_WebAuthn.Error.signature) {
-            try Self.authenticate(vector, credential: W3C_WebAuthn.Credential(
-                id: credential.id,
-                publicKey: other.publicKey,
-                signCount: 0,
-                aaguid: credential.aaguid,
-                backupEligible: true,
-                backedUp: true,
-                userVerified: false,
-                attestationFormat: "none"
-            ))
+            try Self.authenticate(
+                vector,
+                credential: W3C_WebAuthn.Credential(
+                    id: credential.id,
+                    publicKey: other.publicKey,
+                    signCount: 0,
+                    aaguid: credential.aaguid,
+                    backupEligible: true,
+                    backedUp: true,
+                    userVerified: false,
+                    attestationFormat: "none"
+                )
+            )
         }
     }
 
@@ -234,7 +236,8 @@ struct `W3C WebAuthn Tests` {
             challenge: Array(0..<16),
             excludeCredentials: [.init(id: [1, 2, 3], transports: [.internal, .hybrid])]
         )
-        let expected = #"{"rp":{"id":"example.org","name":"Example"},"user":{"id":"AQID","name":"ada@example.org","#
+        let expected =
+            #"{"rp":{"id":"example.org","name":"Example"},"user":{"id":"AQID","name":"ada@example.org","#
             + #""displayName":"Ada"},"challenge":"AAECAwQFBgcICQoLDA0ODw","pubKeyCredParams":[{"type":"public-key","#
             + #""alg":-7}],"timeout":300000,"excludeCredentials":[{"type":"public-key","id":"AQID","transports":"#
             + #"["internal","hybrid"]}],"authenticatorSelection":{"residentKey":"required","requireResidentKey":true,"#
@@ -246,7 +249,8 @@ struct `W3C WebAuthn Tests` {
     func `request options are written as the browser's JSON form`() {
         let relyingParty = W3C_WebAuthn.RelyingParty(id: "example.org", name: "Example", origins: ["https://example.org"])
         let options = W3C_WebAuthn.RequestOptions(relyingParty: relyingParty, challenge: Array(0..<16))
-        let expected = #"{"challenge":"AAECAwQFBgcICQoLDA0ODw","timeout":300000,"rpId":"example.org","#
+        let expected =
+            #"{"challenge":"AAECAwQFBgcICQoLDA0ODw","timeout":300000,"rpId":"example.org","#
             + #""allowCredentials":[],"userVerification":"required"}"#
         #expect(String(decoding: options.json, as: UTF8.self) == expected)
     }

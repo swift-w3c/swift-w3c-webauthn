@@ -28,22 +28,18 @@ extension W3C_WebAuthn.Assertion {
         relyingParty: W3C_WebAuthn.RelyingParty,
         credential: W3C_WebAuthn.Credential
     ) throws(W3C_WebAuthn.Error) -> W3C_WebAuthn.Credential {
-        // Steps 7 to 14.
         let clientData = try W3C_WebAuthn.ClientData(json: clientDataJSON)
         try clientData.verify(type: "webauthn.get", challenge: challenge, relyingParty: relyingParty)
 
-        // Steps 15 to 18.
         let data = try W3C_WebAuthn.AuthenticatorData(authenticatorData)
         try data.verify(relyingParty: relyingParty)
         guard data.flags.contains(.backupEligible) == credential.backupEligible else { throw .backupState }
 
-        // Steps 20 and 21.
         let publicKey = try W3C_WebAuthn.PublicKey(cose: credential.publicKey, algorithms: relyingParty.algorithms)
         guard publicKey.isValidSignature(signature, for: authenticatorData + clientData.hash) else {
             throw .signature
         }
 
-        // Step 22.
         if data.signCount != 0 || credential.signCount != 0 {
             guard data.signCount > credential.signCount else {
                 throw .counter(stored: credential.signCount, received: data.signCount)
