@@ -1,0 +1,11 @@
+# .github/metadata.yaml
+description: "Swift implementation of W3C Web Authentication Level 3: relying-party values and verification of registrations and assertions."
+topics:
+  - standards
+  - w3c
+  - webauthn
+  - passkeys
+  - authentication
+homepage: "https://swift-institute.org"
+readme:
+  family: E
