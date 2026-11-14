@@ -3,6 +3,9 @@ extension W3C_WebAuthn {
     /// Why a registration or an assertion is refused. Each case names the step of section 7.1 or 7.2 that failed.
     public enum Error: Swift.Error, Sendable, Equatable {
 
+        /// A response in its JSON form (section 5.1) that lacks a member, or whose binary member is not base64url.
+        case response
+
         /// `clientDataJSON` is not a JSON object with string `type`, `challenge` and `origin` members, a boolean
         /// `crossOrigin` when present and a string `topOrigin` when present, or its challenge is not base64url.
         case clientData

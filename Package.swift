@@ -70,7 +70,8 @@ let package = Package(
         .testTarget(
             name: "W3C WebAuthn Tests",
             dependencies: [
-                .target(name: "W3C WebAuthn")
+                .target(name: "W3C WebAuthn"),
+                .product(name: "RFC 8259", package: "swift-rfc-8259"),
             ]
         ),
     ],
