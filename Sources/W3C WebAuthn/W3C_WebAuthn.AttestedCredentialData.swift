@@ -4,8 +4,8 @@ extension W3C_WebAuthn {
     /// public key.
     public struct AttestedCredentialData: Sendable, Hashable {
 
-        /// The AAGUID of the authenticator model; all zeros when the authenticator does not say.
-        public let aaguid: [UInt8]
+        /// The AAGUID of the authenticator model; ``AAGUID/zero`` when the authenticator does not say.
+        public let aaguid: AAGUID
 
         /// The credential ID.
         public let credentialID: [UInt8]

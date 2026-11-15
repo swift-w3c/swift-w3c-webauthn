@@ -14,7 +14,7 @@ extension W3C_WebAuthn {
         public var signCount: UInt32
 
         /// The AAGUID of the authenticator model that made it.
-        public let aaguid: [UInt8]
+        public let aaguid: AAGUID
 
         /// Whether the credential may be backed up (BE); fixed for the credential's life.
         public let backupEligible: Bool
@@ -32,7 +32,7 @@ extension W3C_WebAuthn {
             id: [UInt8],
             publicKey: [UInt8],
             signCount: UInt32,
-            aaguid: [UInt8],
+            aaguid: AAGUID,
             backupEligible: Bool,
             backedUp: Bool,
             userVerified: Bool,

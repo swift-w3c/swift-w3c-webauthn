@@ -33,7 +33,7 @@ extension W3C_WebAuthn {
             var attested: AttestedCredentialData? = nil
             if flags.contains(.attestedCredentialData) {
                 guard bytes.count - position >= 18 else { throw .authenticatorData }
-                let aaguid = Array(bytes[position..<(position + 16)])
+                let aaguid = AAGUID(uncheckedBytes: Array(bytes[position..<(position + 16)]))
                 let length = Int(bytes[position + 16]) << 8 | Int(bytes[position + 17])
                 position += 18
                 guard bytes.count - position >= length else { throw .authenticatorData }

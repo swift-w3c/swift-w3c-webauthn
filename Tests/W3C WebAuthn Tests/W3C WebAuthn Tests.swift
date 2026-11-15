@@ -64,7 +64,7 @@ struct `W3C WebAuthn Tests` {
         let object = try W3C_WebAuthn.AttestationObject(hex(Example.noAttestation.attestationObject))
         #expect(object.format == "none")
         #expect(object.authenticatorData.flags == [.userPresent, .backupEligible, .backedUp, .attestedCredentialData])
-        #expect(object.authenticatorData.attestedCredentialData?.aaguid == hex("8446ccb9ab1db374750b2367ff6f3a1f"))
+        #expect(object.authenticatorData.attestedCredentialData?.aaguid == W3C_WebAuthn.AAGUID(hex: "8446ccb9-ab1d-b374-750b-2367ff6f3a1f"))
         let credential = try Self.register(Example.noAttestation)
         #expect(credential.backupEligible)
         #expect(credential.backedUp)
@@ -253,5 +253,21 @@ struct `W3C WebAuthn Tests` {
             #"{"challenge":"AAECAwQFBgcICQoLDA0ODw","timeout":300000,"rpId":"example.org","#
             + #""allowCredentials":[],"userVerification":"required"}"#
         #expect(String(decoding: options.json, as: UTF8.self) == expected)
+    }
+}
+
+@Suite
+struct `AAGUID Tests` {
+    @Test
+    func `an AAGUID is sixteen bytes, read from hex in either case with or without dashes, and written back in lowercase`() {
+        let aaguid = W3C_WebAuthn.AAGUID(hex: "FBFC3007-154E-4ECC-8C0B-6E020557D7BD")
+        #expect(aaguid?.hex == "fbfc3007154e4ecc8c0b6e020557d7bd")
+        #expect(aaguid == W3C_WebAuthn.AAGUID(hex: "fbfc3007154e4ecc8c0b6e020557d7bd"))
+        #expect(W3C_WebAuthn.AAGUID(hex: "fbfc3007") == nil)
+        #expect(W3C_WebAuthn.AAGUID(hex: "zz" + String(repeating: "0", count: 30)) == nil)
+        #expect(W3C_WebAuthn.AAGUID(bytes: [1, 2, 3]) == nil)
+        #expect(W3C_WebAuthn.AAGUID.zero.isZero)
+        #expect(aaguid?.isZero == false)
+        #expect(W3C_WebAuthn.AAGUID(bytes: aaguid?.bytes ?? []) == aaguid)
     }
 }
