@@ -1,10 +1,12 @@
-extension W3C_WebAuthn {
+public import W3C
+
+extension W3C.WebAuthn {
 
     /// Verifying a registration ceremony (section 7.1).
     public enum Registration {}
 }
 
-extension W3C_WebAuthn.Registration {
+extension W3C.WebAuthn.Registration {
 
     /// The credential a registration created, after every check of section 7.1 this package can make.
     ///
@@ -21,17 +23,17 @@ extension W3C_WebAuthn.Registration {
         clientDataJSON: [UInt8],
         attestationObject: [UInt8],
         challenge: [UInt8],
-        relyingParty: W3C_WebAuthn.RelyingParty
-    ) throws(W3C_WebAuthn.Error) -> W3C_WebAuthn.Credential {
-        let clientData = try W3C_WebAuthn.ClientData(json: clientDataJSON)
+        relyingParty: W3C.WebAuthn.RelyingParty
+    ) throws(W3C.WebAuthn.Error) -> W3C.WebAuthn.Credential {
+        let clientData = try W3C.WebAuthn.ClientData(json: clientDataJSON)
         try clientData.verify(type: "webauthn.create", challenge: challenge, relyingParty: relyingParty)
 
-        let object = try W3C_WebAuthn.AttestationObject(attestationObject)
+        let object = try W3C.WebAuthn.AttestationObject(attestationObject)
         let authenticatorData = object.authenticatorData
         try authenticatorData.verify(relyingParty: relyingParty)
         guard let attested = authenticatorData.attestedCredentialData else { throw .attestedCredentialData }
 
-        let publicKey = try W3C_WebAuthn.PublicKey(attested.publicKey, algorithms: relyingParty.algorithms)
+        let publicKey = try W3C.WebAuthn.PublicKey(attested.publicKey, algorithms: relyingParty.algorithms)
         guard attested.credentialID.count <= 1023 else { throw .credentialID }
 
         try verifyStatement(
@@ -42,7 +44,7 @@ extension W3C_WebAuthn.Registration {
             publicKey: publicKey
         )
 
-        return W3C_WebAuthn.Credential(
+        return W3C.WebAuthn.Credential(
             id: attested.credentialID,
             publicKey: attested.publicKeyBytes,
             signCount: authenticatorData.signCount,
@@ -59,8 +61,8 @@ extension W3C_WebAuthn.Registration {
         statement: RFC_8949.Value,
         authenticatorData: [UInt8],
         clientDataHash: [UInt8],
-        publicKey: W3C_WebAuthn.PublicKey
-    ) throws(W3C_WebAuthn.Error) {
+        publicKey: W3C.WebAuthn.PublicKey
+    ) throws(W3C.WebAuthn.Error) {
         switch format {
         case "none":
             guard statement.map?.isEmpty == true else { throw .attestationStatement }

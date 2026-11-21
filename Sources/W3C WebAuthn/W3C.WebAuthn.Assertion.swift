@@ -1,10 +1,12 @@
-extension W3C_WebAuthn {
+public import W3C
+
+extension W3C.WebAuthn {
 
     /// Verifying an authentication ceremony (section 7.2).
     public enum Assertion {}
 }
 
-extension W3C_WebAuthn.Assertion {
+extension W3C.WebAuthn.Assertion {
 
     /// The credential as it stands after a verified assertion: its counter, backup state and user verification
     /// updated (section 7.2, steps 21 to 24).
@@ -25,17 +27,17 @@ extension W3C_WebAuthn.Assertion {
         authenticatorData: [UInt8],
         signature: [UInt8],
         challenge: [UInt8],
-        relyingParty: W3C_WebAuthn.RelyingParty,
-        credential: W3C_WebAuthn.Credential
-    ) throws(W3C_WebAuthn.Error) -> W3C_WebAuthn.Credential {
-        let clientData = try W3C_WebAuthn.ClientData(json: clientDataJSON)
+        relyingParty: W3C.WebAuthn.RelyingParty,
+        credential: W3C.WebAuthn.Credential
+    ) throws(W3C.WebAuthn.Error) -> W3C.WebAuthn.Credential {
+        let clientData = try W3C.WebAuthn.ClientData(json: clientDataJSON)
         try clientData.verify(type: "webauthn.get", challenge: challenge, relyingParty: relyingParty)
 
-        let data = try W3C_WebAuthn.AuthenticatorData(authenticatorData)
+        let data = try W3C.WebAuthn.AuthenticatorData(authenticatorData)
         try data.verify(relyingParty: relyingParty)
         guard data.flags.contains(.backupEligible) == credential.backupEligible else { throw .backupState }
 
-        let publicKey = try W3C_WebAuthn.PublicKey(cose: credential.publicKey, algorithms: relyingParty.algorithms)
+        let publicKey = try W3C.WebAuthn.PublicKey(cose: credential.publicKey, algorithms: relyingParty.algorithms)
         guard publicKey.isValidSignature(signature, for: authenticatorData + clientData.hash) else {
             throw .signature
         }

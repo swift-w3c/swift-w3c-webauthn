@@ -1,4 +1,6 @@
-extension W3C_WebAuthn {
+public import W3C
+
+extension W3C.WebAuthn {
 
     /// The flags byte of authenticator data (section 6.1).
     public struct Flags: OptionSet, Sendable, Hashable {

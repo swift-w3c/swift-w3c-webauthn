@@ -38,7 +38,7 @@ struct `Response Tests` {
             ],
             "clientExtensionResults": [:],
         ]
-        let read = try W3C_WebAuthn.RegistrationResponse(response)
+        let read = try W3C.WebAuthn.RegistrationResponse(response)
         #expect(read.id == hex(vector.credentialID))
         #expect(read.attestationObject == hex(vector.attestationObject))
         #expect(read.transports == [.internal, .hybrid])
@@ -55,11 +55,11 @@ struct `Response Tests` {
             "userHandle": nil,
         ]
         let response: RFC_8259.Value = ["id": .string(id), "rawId": .string(id), "type": "public-key", "response": body]
-        let read = try W3C_WebAuthn.AuthenticationResponse(response)
+        let read = try W3C.WebAuthn.AuthenticationResponse(response)
         #expect(read.signature == hex(vector.signature))
         #expect(read.userHandle == nil)
-        #expect(throws: W3C_WebAuthn.Error.response) {
-            try W3C_WebAuthn.AuthenticationResponse(["id": .string(id), "type": "public-key"])
+        #expect(throws: W3C.WebAuthn.Error.response) {
+            try W3C.WebAuthn.AuthenticationResponse(["id": .string(id), "type": "public-key"])
         }
     }
 }

@@ -44,9 +44,9 @@ struct `Fuzz Tests` {
         var refused = 0
         for _ in 0..<Self.rounds {
             let bytes = random.bytes(upTo: 300)
-            if (try? W3C_WebAuthn.AuthenticatorData(bytes)) == nil { refused += 1 }
-            _ = try? W3C_WebAuthn.AttestationObject(bytes)
-            _ = try? W3C_WebAuthn.ClientData(json: bytes)
+            if (try? W3C.WebAuthn.AuthenticatorData(bytes)) == nil { refused += 1 }
+            _ = try? W3C.WebAuthn.AttestationObject(bytes)
+            _ = try? W3C.WebAuthn.ClientData(json: bytes)
         }
         #expect(refused > Self.rounds * 9 / 10)
     }
@@ -56,9 +56,9 @@ struct `Fuzz Tests` {
         var random = Fuzzing(state: 0xfacade)
         let sources = [hex(vector.attestationObject), hex(vector.authenticatorData), hex(vector.registrationClientDataJSON)]
         for _ in 0..<Self.rounds / 4 {
-            _ = try? W3C_WebAuthn.AttestationObject(random.mutate(sources[0]))
-            _ = try? W3C_WebAuthn.AuthenticatorData(random.mutate(sources[1]))
-            _ = try? W3C_WebAuthn.ClientData(json: random.mutate(sources[2]))
+            _ = try? W3C.WebAuthn.AttestationObject(random.mutate(sources[0]))
+            _ = try? W3C.WebAuthn.AuthenticatorData(random.mutate(sources[1]))
+            _ = try? W3C.WebAuthn.ClientData(json: random.mutate(sources[2]))
         }
     }
 }

@@ -1,7 +1,8 @@
 internal import Byte
 internal import FIPS_180_4
+import W3C
 
-extension W3C_WebAuthn {
+extension W3C.WebAuthn {
 
     /// SHA-256, the hash of the RP ID and of `clientDataJSON`.
     static func sha256(_ bytes: [UInt8]) -> [UInt8] {

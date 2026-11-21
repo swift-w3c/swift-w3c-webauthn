@@ -1,4 +1,6 @@
-extension W3C_WebAuthn {
+public import W3C
+
+extension W3C.WebAuthn {
 
     /// Attested credential data (section 6.5.2): the authenticator model, the new credential's ID and its
     /// public key.

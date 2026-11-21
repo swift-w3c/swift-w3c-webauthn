@@ -1,6 +1,7 @@
 public import RFC_8259
+public import W3C
 
-extension W3C_WebAuthn {
+extension W3C.WebAuthn {
 
     /// A registration as the browser writes it with `PublicKeyCredential.toJSON()` (`RegistrationResponseJSON`,
     /// section 5.1.3).
@@ -19,12 +20,12 @@ extension W3C_WebAuthn {
         public let transports: [Transport]
 
         /// The response from its JSON value.
-        public init(_ value: RFC_8259.Value) throws(W3C_WebAuthn.Error) {
+        public init(_ value: RFC_8259.Value) throws(W3C.WebAuthn.Error) {
             guard value["type"]?.string == "public-key",
-                let id = value["rawId"]?.string.flatMap(W3C_WebAuthn.Base64URL.decode),
+                let id = value["rawId"]?.string.flatMap(W3C.WebAuthn.Base64URL.decode),
                 let response = value["response"],
-                let clientDataJSON = response["clientDataJSON"]?.string.flatMap(W3C_WebAuthn.Base64URL.decode),
-                let attestationObject = response["attestationObject"]?.string.flatMap(W3C_WebAuthn.Base64URL.decode)
+                let clientDataJSON = response["clientDataJSON"]?.string.flatMap(W3C.WebAuthn.Base64URL.decode),
+                let attestationObject = response["attestationObject"]?.string.flatMap(W3C.WebAuthn.Base64URL.decode)
             else { throw .response }
             self.id = id
             self.clientDataJSON = clientDataJSON

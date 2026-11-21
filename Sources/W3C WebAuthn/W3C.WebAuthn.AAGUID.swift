@@ -1,4 +1,6 @@
-extension W3C_WebAuthn {
+public import W3C
+
+extension W3C.WebAuthn {
 
     /// The authenticator model's identifier (section 6.5.1): 16 bytes, all zero when the authenticator does not
     /// say which model it is.

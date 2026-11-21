@@ -1,7 +1,8 @@
 internal import Byte
 internal import RFC_8259
+public import W3C
 
-extension W3C_WebAuthn {
+extension W3C.WebAuthn {
 
     /// The client data the browser collected for a ceremony (`CollectedClientData`, section 5.8.1), read from
     /// `clientDataJSON`.
@@ -27,7 +28,7 @@ extension W3C_WebAuthn {
         /// The origin of the top-level document, present when it differs from `origin`.
         public let topOrigin: String?
 
-        public init(json: [UInt8]) throws(W3C_WebAuthn.Error) {
+        public init(json: [UInt8]) throws(W3C.WebAuthn.Error) {
             let value: RFC_8259.Value
             do {
                 value = try RFC_8259.Decode.parse(json.map(Byte.init(_:)))
@@ -36,7 +37,7 @@ extension W3C_WebAuthn {
             }
             guard let type = value["type"]?.string,
                 let encodedChallenge = value["challenge"]?.string,
-                let challenge = W3C_WebAuthn.Base64URL.decode(encodedChallenge),
+                let challenge = W3C.WebAuthn.Base64URL.decode(encodedChallenge),
                 let origin = value["origin"]?.string
             else { throw .clientData }
             let crossOrigin: Bool
@@ -60,21 +61,21 @@ extension W3C_WebAuthn {
         }
 
         /// The SHA-256 of `json`.
-        public var hash: [UInt8] { W3C_WebAuthn.sha256(json) }
+        public var hash: [UInt8] { W3C.WebAuthn.sha256(json) }
     }
 }
 
-extension W3C_WebAuthn.ClientData {
+extension W3C.WebAuthn.ClientData {
 
     /// Steps 7 to 10 of section 7.1, and 10 to 13 of section 7.2: the type, the challenge, the origin and the
     /// cross-origin context.
     func verify(
         type expectedType: String,
         challenge expectedChallenge: [UInt8],
-        relyingParty: W3C_WebAuthn.RelyingParty
-    ) throws(W3C_WebAuthn.Error) {
+        relyingParty: W3C.WebAuthn.RelyingParty
+    ) throws(W3C.WebAuthn.Error) {
         guard type == expectedType else { throw .type(type) }
-        guard W3C_WebAuthn.constantTimeEqual(challenge, expectedChallenge) else { throw .challenge }
+        guard W3C.WebAuthn.constantTimeEqual(challenge, expectedChallenge) else { throw .challenge }
         guard relyingParty.origins.contains(origin) else { throw .origin(origin) }
         if crossOrigin || topOrigin != nil {
             guard relyingParty.allowsCrossOrigin else { throw .crossOrigin }
@@ -85,7 +86,7 @@ extension W3C_WebAuthn.ClientData {
     }
 }
 
-extension W3C_WebAuthn {
+extension W3C.WebAuthn {
 
     /// Whether `a` and `b` are equal, in time that depends only on their lengths.
     static func constantTimeEqual(_ a: [UInt8], _ b: [UInt8]) -> Bool {

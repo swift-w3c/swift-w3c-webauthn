@@ -1,4 +1,6 @@
-extension W3C_WebAuthn {
+public import W3C
+
+extension W3C.WebAuthn {
 
     /// Authenticator data (section 6.1): the RP ID hash, the flags, the signature counter, and, when the flags
     /// say so, attested credential data and extensions.
@@ -21,7 +23,7 @@ extension W3C_WebAuthn {
         /// The extension outputs, a CBOR map, present when the ED flag is set.
         public let extensions: RFC_8949.Value?
 
-        public init(_ bytes: [UInt8]) throws(W3C_WebAuthn.Error) {
+        public init(_ bytes: [UInt8]) throws(W3C.WebAuthn.Error) {
             guard bytes.count >= 37 else { throw .authenticatorData }
             let flags = Flags(rawValue: bytes[32])
             var count: UInt32 = 0
@@ -74,12 +76,12 @@ extension W3C_WebAuthn {
     }
 }
 
-extension W3C_WebAuthn.AuthenticatorData {
+extension W3C.WebAuthn.AuthenticatorData {
 
     /// Steps 13 to 16 of section 7.1 and 15 to 18 of section 7.2: the RP ID hash, user presence, user
     /// verification when required, and a backup state that is possible.
-    func verify(relyingParty: W3C_WebAuthn.RelyingParty) throws(W3C_WebAuthn.Error) {
-        guard W3C_WebAuthn.constantTimeEqual(relyingPartyIDHash, relyingParty.idHash) else { throw .relyingPartyID }
+    func verify(relyingParty: W3C.WebAuthn.RelyingParty) throws(W3C.WebAuthn.Error) {
+        guard W3C.WebAuthn.constantTimeEqual(relyingPartyIDHash, relyingParty.idHash) else { throw .relyingPartyID }
         guard flags.contains(.userPresent) else { throw .userPresence }
         if relyingParty.userVerification == .required {
             guard flags.contains(.userVerified) else { throw .userVerification }

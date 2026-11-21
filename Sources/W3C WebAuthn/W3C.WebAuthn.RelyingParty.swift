@@ -1,4 +1,6 @@
-extension W3C_WebAuthn {
+public import W3C
+
+extension W3C.WebAuthn {
 
     /// What a relying party accepts: its RP ID, its origins, how strictly it asks for user verification, and
     /// the public key algorithms it supports.
@@ -45,11 +47,11 @@ extension W3C_WebAuthn {
         }
 
         /// `rpIdHash`: the SHA-256 of the UTF-8 RP ID.
-        public var idHash: [UInt8] { W3C_WebAuthn.sha256(Array(id.utf8)) }
+        public var idHash: [UInt8] { W3C.WebAuthn.sha256(Array(id.utf8)) }
     }
 }
 
-extension W3C_WebAuthn.RelyingParty {
+extension W3C.WebAuthn.RelyingParty {
 
     /// `UserVerificationRequirement` (section 5.8.6).
     public enum UserVerification: String, Sendable, Hashable {

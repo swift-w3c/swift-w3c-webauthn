@@ -1,4 +1,6 @@
-extension W3C_WebAuthn {
+public import W3C
+
+extension W3C.WebAuthn {
 
     /// A registered credential: what a relying party stores after a registration and passes back to verify an
     /// assertion (section 7.1, step 26).

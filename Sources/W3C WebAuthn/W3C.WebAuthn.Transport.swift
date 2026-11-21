@@ -1,4 +1,6 @@
-extension W3C_WebAuthn {
+public import W3C
+
+extension W3C.WebAuthn {
 
     /// `AuthenticatorTransport` (section 5.8.4): how the browser may reach an authenticator. Open, so values a
     /// browser adds later are kept.

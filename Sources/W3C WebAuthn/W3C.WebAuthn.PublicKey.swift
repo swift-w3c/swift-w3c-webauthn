@@ -1,7 +1,8 @@
 internal import ISO_8824
 internal import ISO_8825
+public import W3C
 
-extension W3C_WebAuthn {
+extension W3C.WebAuthn {
 
     /// A credential public key of an algorithm this package verifies.
     public enum PublicKey: Sendable, Hashable {
@@ -11,12 +12,12 @@ extension W3C_WebAuthn {
     }
 }
 
-extension W3C_WebAuthn.PublicKey {
+extension W3C.WebAuthn.PublicKey {
 
     /// The public key a COSE key holds, when its algorithm is one of `algorithms` (section 7.1, step 18).
     ///
     /// The COSE key must name its algorithm, as section 6.5.1.1 requires.
-    public init(_ key: RFC_9052.Key, algorithms: [RFC_9053.Algorithm] = [.es256]) throws(W3C_WebAuthn.Error) {
+    public init(_ key: RFC_9052.Key, algorithms: [RFC_9053.Algorithm] = [.es256]) throws(W3C.WebAuthn.Error) {
         guard let value = key.algorithm,
             let algorithm = RFC_9053.Algorithm(value),
             algorithms.contains(algorithm)
@@ -41,7 +42,7 @@ extension W3C_WebAuthn.PublicKey {
     }
 
     /// The public key encoded as a COSE key in `bytes`, as a relying party stores it.
-    public init(cose bytes: [UInt8], algorithms: [RFC_9053.Algorithm] = [.es256]) throws(W3C_WebAuthn.Error) {
+    public init(cose bytes: [UInt8], algorithms: [RFC_9053.Algorithm] = [.es256]) throws(W3C.WebAuthn.Error) {
         let key: RFC_9052.Key
         do {
             key = try RFC_9052.Key(decoding: bytes)

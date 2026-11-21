@@ -1,6 +1,7 @@
 internal import RFC_8259
+public import W3C
 
-extension W3C_WebAuthn {
+extension W3C.WebAuthn {
 
     /// `PublicKeyCredentialDescriptor` (section 5.8.3): a credential named in `excludeCredentials` or
     /// `allowCredentials`.
@@ -18,7 +19,7 @@ extension W3C_WebAuthn {
         var json: RFC_8259.Value {
             var members: [(key: String, value: RFC_8259.Value)] = [
                 ("type", .string("public-key")),
-                ("id", .string(W3C_WebAuthn.Base64URL.encode(id))),
+                ("id", .string(W3C.WebAuthn.Base64URL.encode(id))),
             ]
             if !transports.isEmpty {
                 members.append(("transports", .array(RFC_8259.Array(transports.map { .string($0.rawValue) }))))

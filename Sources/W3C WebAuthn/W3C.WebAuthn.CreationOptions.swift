@@ -1,6 +1,7 @@
 internal import RFC_8259
+public import W3C
 
-extension W3C_WebAuthn {
+extension W3C.WebAuthn {
 
     /// The options of a registration (`PublicKeyCredentialCreationOptions`, section 5.4), for a discoverable
     /// credential (a passkey) with no attestation.
@@ -48,7 +49,7 @@ extension W3C_WebAuthn {
     }
 }
 
-extension W3C_WebAuthn.CreationOptions {
+extension W3C.WebAuthn.CreationOptions {
 
     /// The options as `PublicKeyCredentialCreationOptionsJSON` (section 5.1.5), for the browser's
     /// `PublicKeyCredential.parseCreationOptionsFromJSON`.
@@ -61,7 +62,7 @@ extension W3C_WebAuthn.CreationOptions {
         }
         let rp: Members = [("id", .string(relyingParty.id)), ("name", .string(relyingParty.name))]
         let user: Members = [
-            ("id", .string(W3C_WebAuthn.Base64URL.encode(userID))),
+            ("id", .string(W3C.WebAuthn.Base64URL.encode(userID))),
             ("name", .string(userName)),
             ("displayName", .string(userDisplayName)),
         ]
@@ -73,7 +74,7 @@ extension W3C_WebAuthn.CreationOptions {
         let options: Members = [
             ("rp", .object(RFC_8259.Object(rp))),
             ("user", .object(RFC_8259.Object(user))),
-            ("challenge", .string(W3C_WebAuthn.Base64URL.encode(challenge))),
+            ("challenge", .string(W3C.WebAuthn.Base64URL.encode(challenge))),
             ("pubKeyCredParams", .array(RFC_8259.Array(parameters))),
             ("timeout", .number(RFC_8259.Number(timeout))),
             ("excludeCredentials", .array(RFC_8259.Array(excludeCredentials.map(\.json)))),

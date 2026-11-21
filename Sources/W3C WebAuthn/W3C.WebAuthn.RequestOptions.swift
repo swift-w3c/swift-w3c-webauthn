@@ -1,6 +1,7 @@
 internal import RFC_8259
+public import W3C
 
-extension W3C_WebAuthn {
+extension W3C.WebAuthn {
 
     /// The options of an authentication (`PublicKeyCredentialRequestOptions`, section 5.5).
     ///
@@ -34,13 +35,13 @@ extension W3C_WebAuthn {
     }
 }
 
-extension W3C_WebAuthn.RequestOptions {
+extension W3C.WebAuthn.RequestOptions {
 
     /// The options as `PublicKeyCredentialRequestOptionsJSON` (section 5.1.6), for the browser's
     /// `PublicKeyCredential.parseRequestOptionsFromJSON`.
     public var json: [UInt8] {
         let options: [(key: String, value: RFC_8259.Value)] = [
-            ("challenge", .string(W3C_WebAuthn.Base64URL.encode(challenge))),
+            ("challenge", .string(W3C.WebAuthn.Base64URL.encode(challenge))),
             ("timeout", .number(RFC_8259.Number(timeout))),
             ("rpId", .string(relyingParty.id)),
             ("allowCredentials", .array(RFC_8259.Array(allowCredentials.map(\.json)))),

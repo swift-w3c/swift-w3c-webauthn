@@ -1,14 +1,15 @@
 internal import ASCII
 internal import Byte
 internal import RFC_4648
+import W3C
 
-extension W3C_WebAuthn {
+extension W3C.WebAuthn {
 
     /// Base64url without padding, the encoding of binary members in WebAuthn's JSON (section 5.1).
     enum Base64URL {}
 }
 
-extension W3C_WebAuthn.Base64URL {
+extension W3C.WebAuthn.Base64URL {
 
     static func encode(_ bytes: [UInt8]) -> String {
         let codes = RFC_4648.Base64.URL.encode(bytes.map(Byte.init(_:)), padding: false)

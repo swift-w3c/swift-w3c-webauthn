@@ -1,4 +1,6 @@
-extension W3C_WebAuthn {
+public import W3C
+
+extension W3C.WebAuthn {
 
     /// Why a registration or an assertion is refused. Each case names the step of section 7.1 or 7.2 that failed.
     public enum Error: Swift.Error, Sendable, Equatable {

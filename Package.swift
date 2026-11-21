@@ -15,6 +15,7 @@ let package = Package(
         .library(name: "W3C WebAuthn", targets: ["W3C WebAuthn"])
     ],
     dependencies: [
+        .package(url: "https://github.com/swift-w3c/swift-w3c.git", branch: "main"),
         .package(
             url: "https://github.com/swift-ietf/swift-rfc-9053.git",
             branch: "main"
@@ -56,6 +57,7 @@ let package = Package(
         .target(
             name: "W3C WebAuthn",
             dependencies: [
+                .product(name: "W3C", package: "swift-w3c"),
                 .product(name: "RFC 9053", package: "swift-rfc-9053"),
                 .product(name: "RFC 8259", package: "swift-rfc-8259"),
                 .product(name: "RFC 4648", package: "swift-rfc-4648"),
